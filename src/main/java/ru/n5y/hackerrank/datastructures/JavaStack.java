@@ -21,31 +21,30 @@ public class JavaStack {
     final Stack<Character> stack = new Stack<>();
     for (char c : chars) {
       switch (c) {
-        case '(':
-        case '{':
-        case '[':
-          stack.push(c);
-          break;
-        case ')':
-          if (stack.isEmpty() || stack.pop() != '(') {
-            return false;
-          }
-          break;
-        case '}':
-          if (stack.isEmpty() || stack.pop() != '{') {
-            return false;
-          }
-          break;
-        case ']':
-          if (stack.isEmpty() || stack.pop() != '[') {
-            return false;
-          }
-          break;
-        default:
-          // do nothing
+      case '(':
+      case '{':
+      case '[':
+        stack.push(c);
+        break;
+      case ')':
+        if (stack.isEmpty() || stack.pop() != '(') {
+          return false;
+        }
+        break;
+      case '}':
+        if (stack.isEmpty() || stack.pop() != '{') {
+          return false;
+        }
+        break;
+      case ']':
+        if (stack.isEmpty() || stack.pop() != '[') {
+          return false;
+        }
+        break;
+      default:
+        // do nothing
       }
     }
     return stack.isEmpty();
   }
-
 }
