@@ -3,6 +3,7 @@ package ru.n5y.hackerrank.introduction;
 import java.util.Locale;
 import java.util.Scanner;
 
+
 public class StringIntroduction {
   public static void main(String[] args) {
 

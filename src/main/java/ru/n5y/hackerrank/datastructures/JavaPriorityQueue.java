@@ -1,8 +1,6 @@
 package ru.n5y.hackerrank.datastructures;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /** @author Nikolay Kuleshov */
 public class JavaPriorityQueue {
@@ -30,8 +28,61 @@ public class JavaPriorityQueue {
   }
 
   static class Priorities {
+
+    private final PriorityQueue<Student> queue;
+
+    public Priorities() {
+      this.queue = new PriorityQueue<>(Comparator
+          .comparing(Student::getCGPA).reversed()
+          .thenComparing(Student::getName)
+          .thenComparing(Student::getID)
+      );
+    }
+
     List<Student> getStudents(List<String> events) {
-      return null;
+      events.stream()
+          .map(Command::fromLine)
+          .forEach(c -> c.visit(queue));
+      return new ArrayList<>(queue);
+    }
+
+    private interface Command {
+      void visit(PriorityQueue<Student> queue);
+
+      static Command fromLine(String line) {
+        if (line.startsWith("ENTER")) {
+          final String[] split = line.split("\\s+");
+          final String name = split[1];
+          final double cpga = Double.parseDouble(split[2]);
+          final int id = Integer.parseInt(split[3]);
+          return new Enter(new Student(id, name, cpga));
+        } else {
+          return new Served();
+        }
+      }
+    }
+
+    private static class Served implements Command {
+
+      @Override
+      public void visit(PriorityQueue<Student> queue) {
+        final Student poll = queue.poll();
+        System.out.println("Served: " + poll);
+      }
+    }
+
+    private static class Enter implements Command {
+
+      private final Student student;
+
+      private Enter(Student student) {
+        this.student = student;
+      }
+
+      @Override
+      public void visit(PriorityQueue<Student> queue) {
+        queue.add(student);
+      }
     }
   }
 
@@ -57,6 +108,15 @@ public class JavaPriorityQueue {
 
     public double getCGPA() {
       return cgpa;
+    }
+
+    @Override
+    public String toString() {
+      return "Student{" +
+          "id=" + id +
+          ", name='" + name + '\'' +
+          ", cgpa=" + cgpa +
+          '}';
     }
   }
 }
