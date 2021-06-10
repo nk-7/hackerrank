@@ -1,6 +1,10 @@
 package ru.n5y.hackerrank.datastructures;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 /** @author Nikolay Kuleshov */
 public class JavaPriorityQueue {
@@ -22,7 +26,8 @@ public class JavaPriorityQueue {
       System.out.println("EMPTY");
     } else {
       for (Student st : students) {
-        System.out.println(st.getName());
+        System.out.println(st);
+
       }
     }
   }
@@ -43,7 +48,13 @@ public class JavaPriorityQueue {
       events.stream()
           .map(Command::fromLine)
           .forEach(c -> c.visit(queue));
-      return new ArrayList<>(queue);
+
+      final List<Student> list = new ArrayList<>();
+      final int size = queue.size();
+      for (int i = 0; i < size; i++) {
+        list.add(queue.remove());
+      }
+      return list;
     }
 
     private interface Command {
@@ -67,7 +78,6 @@ public class JavaPriorityQueue {
       @Override
       public void visit(PriorityQueue<Student> queue) {
         final Student poll = queue.poll();
-        System.out.println("Served: " + poll);
       }
     }
 
@@ -81,7 +91,7 @@ public class JavaPriorityQueue {
 
       @Override
       public void visit(PriorityQueue<Student> queue) {
-        queue.add(student);
+        queue.offer(student);
       }
     }
   }
